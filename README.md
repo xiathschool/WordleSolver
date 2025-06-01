@@ -4,7 +4,7 @@
 
 The **WordleSolver** solution (already written) hosts an API that can play up to **2,315 turns** per game and automatically runs **100 games** in succession.  Your task is to create **one C# class** that serves as the “brain” for choosing guesses as efficiently as possible.
 
-> **You may not modify any files except your own strategy class** (and the registration line in *Program.cs* if you rename the class).  The autograder restores all other files before grading.
+> **You may not modify any files except your own strategy class** (and the registration line in *Program.cs* if you rename the class). 
 
 ---
 
@@ -40,7 +40,7 @@ When you call <code>WordleService.Guess(string guess)</code> the engine returns 
 2. **For a valid word** the service:
 
    * Increments <code>GuessNumber</code> (first valid guess is 1).
-   * Decrements <code>GuessesRemaining</code> (starts at 2 315, stops at 0).
+   * Decrements <code>GuessesRemaining</code> (starts at 2,315, stops at 0).
    * Compares each letter to the hidden answer and fills <code>LetterStatuses</code> accordingly.
 3. **End‑of‑game conditions**
 
