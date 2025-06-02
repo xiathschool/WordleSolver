@@ -80,7 +80,7 @@ public sealed class WordleService
         // Reject invalid words without consuming a turn.
         if (!result.IsValid)
         {
-            result.Guesses = new List<GuessResult>(_guessHistory);
+            result.Guesses = [.._guessHistory];
             return result;
         }
 
@@ -127,7 +127,7 @@ public sealed class WordleService
 
         // Save history
         _guessHistory.Add(result);
-        result.Guesses = new List<GuessResult>(_guessHistory); 
+        result.Guesses = [.._guessHistory]; 
         _lastResult = result;
 
         return result;
@@ -136,5 +136,5 @@ public sealed class WordleService
     /// <summary>
     /// Maximum number of valid guesses allowed per game.
     /// </summary>
-    public const int MaxGuesses = 2315;
+    public const int MaxGuesses = 2000;
 }

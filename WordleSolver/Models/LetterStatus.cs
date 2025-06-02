@@ -12,6 +12,6 @@ public enum LetterStatus
     /// <summary>The letter exists in the answer but is in the wrong position.</summary>
     Misplaced,
 
-    /// <summary>The letter does not appear in the answer at all.</summary>
+    /// <summary>The letter does not appear in the answer at this place.</summary>
     Unused
 }

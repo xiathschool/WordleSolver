@@ -2,7 +2,7 @@
 
 ## Overview
 
-The **WordleSolver** solution (already written) hosts an API that can play up to **2,315 turns** per game and automatically runs **100 games** in succession.  Your task is to create **one C# class** that serves as the “brain” for choosing guesses as efficiently as possible.
+The **WordleSolver** solution (already written) hosts an API that can play up to **2,000 turns** per game and automatically runs **100 games** in succession.  Your task is to create **one C# class** that serves as the “brain” for choosing guesses as efficiently as possible.
 
 > **You may not modify any files except your own strategy class** (and the registration line in *Program.cs* if you rename the class). 
 
@@ -40,7 +40,7 @@ When you call <code>WordleService.Guess(string guess)</code> the engine returns 
 2. **For a valid word** the service:
 
    * Increments <code>GuessNumber</code> (first valid guess is 1).
-   * Decrements <code>GuessesRemaining</code> (starts at 2,315, stops at 0).
+   * Decrements <code>GuessesRemaining</code> (starts at 2,000, stops at 0).
    * Compares each letter to the hidden answer and fills <code>LetterStatuses</code> accordingly.
 3. **End‑of‑game conditions**
 
@@ -54,7 +54,7 @@ When you call <code>WordleService.Guess(string guess)</code> the engine returns 
 | <code>IsCorrect</code>          | <code>true</code> if the word exactly matches the secret answer.                               |
 | <code>IsValid</code>            | <code>true</code> if the word exists in the dictionary; invalid words don’t use up turns.      |
 | <code>GuessNumber</code>        | 1‑based index of this valid guess. 0 means no valid guesses yet.                               |
-| <code>GuessesRemaining</code>   | How many valid guesses you still have (starts at 2 315).                                       |
+| <code>GuessesRemaining</code>   | How many valid guesses you still have (starts at 2,000).                                       |
 | <code>LetterStatuses\[5]</code> | Per‑letter feedback: <code>Correct</code>, <code>Misplaced</code>, or <code>Unused</code>.     |
 | <code>Guesses</code>            | A list of every **valid** <code>GuessResult</code> returned so far, including the current one. |
 
