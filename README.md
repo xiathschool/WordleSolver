@@ -104,7 +104,8 @@ Use these fields to prune your candidate list and choose the next word.
 | ------------------------------------------------------------------- | ------- |
 | Average guesses **≤ 25**                                            | 30      |
 | Average guesses **≤ 10**                                            | 20      |
-| Average guesses **≤ 5.5**                                           | 20      |
+| Average guesses **≤ 5.5**                                           | 10      |
+| Average guesses **≤ 5.0**                                           | 10      |
 | Code compiles **without** warnings and follows C# conventions       | 10      |
 | Clear, well‑commented algorithm description at the top of your file | 10      |
 | **Total**                                                           | **100** |
