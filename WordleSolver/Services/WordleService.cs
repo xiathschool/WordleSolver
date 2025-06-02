@@ -88,6 +88,7 @@ public sealed class WordleService
         _currentGuessNumber++;
         _guessesRemaining--;
 
+        result.Word = guess;
         result.GuessNumber = _currentGuessNumber;
         result.GuessesRemaining = _guessesRemaining;
         result.IsCorrect = guess == _answer;

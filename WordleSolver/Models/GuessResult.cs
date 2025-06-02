@@ -10,6 +10,11 @@ namespace WordleSolver;
 /// </summary>
 public sealed class GuessResult
 {
+	/// <summary>
+	/// Gets or sets the value of the word that was guessed
+	/// </summary>
+	public string Word { get; set; } = string.Empty;
+
     /// <summary>
     /// Gets or sets a value indicating whether the guess exactly matches the answer.
     /// </summary>
