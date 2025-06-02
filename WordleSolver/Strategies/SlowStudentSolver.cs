@@ -14,9 +14,12 @@ public sealed class SlowStudentSolver : IWordleSolverStrategy
 
 	/// <summary>In-memory dictionary of valid five-letter words.</summary>
 	private static readonly List<string> WordList = LoadWordList();
-	
-    private int _currentIndex;
 
+    /// <summary>
+    /// Remaining words that can be chosen
+    /// </summary>
+    private List<string> _remainingWords = new();
+    
     // TODO: ADD your own private variables that you might need
 
     /// <summary>
@@ -41,7 +44,7 @@ public sealed class SlowStudentSolver : IWordleSolverStrategy
 
 		// If using SLOW student strategy, we just reset the current index
 		// to the first word to start the next guessing sequence
-		_currentIndex = 0; 
+        _remainingWords = [..WordList];  // Set _remainingWords to a copy of the full word list
     }
 
     /// <summary>
@@ -54,9 +57,52 @@ public sealed class SlowStudentSolver : IWordleSolverStrategy
     /// <returns>A five-letter lowercase word.</returns>
     public string PickNextGuess(GuessResult previousResult)
     {
-        if (_currentIndex >= WordList.Count)
-            _currentIndex = 0;
+        // Analyze previousResult and remove any words from
+        // _remainingWords that aren't possible
 
-        return WordList[_currentIndex++];
+        if (!previousResult.IsValid)
+            throw new InvalidOperationException("PickNextGuess shouldn't be called if previous result isn't valid");
+
+        // Check if first guess
+        if (previousResult.Guesses.Count == 0)
+        {
+            // TODO: Pick the best starting word from wordle.txt 
+            // BE CAREFUL that the first word you pick is in that wordle.txt list or your
+            // program won't work. Regular Wordle allows users to guess any five-letter
+            // word from a much larger dictionary, but we restrict it to the words that
+            // can actually be chosen by WordleService to make it easier on you.
+            string firstWord = "stare"; 
+
+            // Filter _remainingWords to remove any words that don't match the first word
+            _remainingWords.Remove(firstWord);
+
+            return firstWord;  
+        }
+        else
+        {
+            // TODO: Analyze the previousResult and reduce/filter _remainingWords based on the feedback
+        }
+
+        // Utilize the remaining words to choose the next guess
+        string choice = ChooseBestRemainingWord(previousResult);
+        _remainingWords.Remove(choice);
+
+        return choice;
+    }
+
+    /// <summary>
+    /// Pick the best of the remaining words according to some heuristic.
+    /// For example, you might want to choose the word that has the most
+    /// common letters found in the remaining words list
+    /// </summary>
+    /// <param name="previousResult"></param>
+    /// <returns></returns>
+    public string ChooseBestRemainingWord(GuessResult previousResult)
+    {
+        if (_remainingWords.Count == 0)
+            throw new InvalidOperationException("No remaining words to choose from");
+
+        // Obviously the first word is the best right?
+        return _remainingWords.First();  
     }
 }
