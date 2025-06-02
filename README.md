@@ -72,8 +72,9 @@ Use these fields to prune your candidate list and choose the next word.
      ```csharp
      public void Reset()
      {
-         // TODO: clear any game‑specific state here
-         _currentIndex = 0;
+		// If using SLOW student strategy, we just reset the current index
+		// to the first word to start the next guessing sequence
+        _remainingWords = [..WordList];  // Set _remainingWords to a copy of the full word list
      }
      ```
    * **`PickNextGuess(GuessResult previousResult)`** must:
@@ -101,22 +102,21 @@ Use these fields to prune your candidate list and choose the next word.
 
 | Requirement                                                         | Points  |
 | ------------------------------------------------------------------- | ------- |
-| Wins **≥ 95 / 100** games                                           | 30      |
-| Average guesses **≤ 5.5**                                           | 25      |
-| No invalid guesses after the 2nd valid turn of any game             | 15      |
+| Average guesses **≤ 25**                                            | 30      |
+| Average guesses **≤ 10**                                            | 20      |
+| Average guesses **≤ 5.5**                                           | 20      |
 | Code compiles **without** warnings and follows C# conventions       | 10      |
 | Clear, well‑commented algorithm description at the top of your file | 10      |
-| Clean, readable code (naming, layout, small methods)                | 10      |
 | **Total**                                                           | **100** |
 
-*Extra credit:* earn **+5 pts** for an average ≤ 4.0 and **+5 pts** for winning all 100 games.
+*Extra credit:* earn **+5 pts** for an average ≤ 4.0.
 
 ---
 
 ## Getting Started tips
 
-* Maintain a `List<string> candidates` that begins as the full dictionary and shrinks after every valid guess.
-* `LetterStatus.Correct` → fix letters in position.  `Misplaced` → letter exists elsewhere.  `Unused` → letter absent.
+* Maintain a `List<string> _remainingWords` that begins as the full dictionary and shrinks after every valid guess.
+* `LetterStatus.Correct` → fix letters in position.  `Misplaced` → letter exists elsewhere.  `Unused` → letter not used AT THAT SPOT.
 * Picking the candidate containing the most frequent distinct letters is a simple but effective heuristic.
 * Handle duplicate letters carefully—track counts, not just presence.
 * First focus on **winning consistently** (even if your first version averages well over 10 guesses); then refine for speed.
