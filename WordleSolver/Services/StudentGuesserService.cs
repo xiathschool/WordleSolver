@@ -1,5 +1,6 @@
 
 using System;
+using System.Diagnostics;
 using WordleSolver.Strategies;
 
 namespace WordleSolver.Services;
@@ -34,6 +35,7 @@ public sealed class StudentGuesserService
 
         for (int i = 0; i < numberOfGames; i++)
         {
+            var stopwatch = Stopwatch.StartNew();
             _service.Play();   // Start a new Wordle game
             _strategy.Reset(); // Reset the strategy state for solving Wordle game
             var result = GuessResult.Default;
@@ -61,7 +63,8 @@ public sealed class StudentGuesserService
                 if (result.GuessesRemaining == 0)
                     break;
             }
-            Console.WriteLine("Run: " + i);
+            stopwatch.Stop();
+            Console.WriteLine($"Run {i + 1}/{numberOfGames} completed in {stopwatch.ElapsedMilliseconds} ms");
         }
 
         Console.WriteLine($"Completed {numberOfGames} game(s).");

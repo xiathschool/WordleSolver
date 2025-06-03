@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 
 namespace WordleSolver.Strategies;
@@ -7,7 +6,7 @@ namespace WordleSolver.Strategies;
 /// Example solver that simply iterates through a fixed list of words.
 /// Students will replace this with a smarter algorithm.
 /// </summary>
-public sealed class SlowStudentSolver2 : IWordleSolverStrategy
+public sealed class SlowStudentSolver25 : IWordleSolverStrategy
 {
 	/// <summary>Absolute or relative path of the word-list file.</summary>
 	private static readonly string WordListPath = Path.Combine("data", "wordle.txt");
@@ -156,32 +155,44 @@ public sealed class SlowStudentSolver2 : IWordleSolverStrategy
         if (_remainingWords.Count == 0)
             throw new InvalidOperationException("No remaining words to choose from");
 
-        string bestGuess = "test";
-        int bestValue = Int32.MaxValue;
-        
-        for (int i = 0; i < _remainingWords.Count; i++)
+        string bestGuess = _remainingWords[0];
+        double bestEntropy = Double.NegativeInfinity;
+        int totalWords = _remainingWords.Count;
+
+        for (int i = 0; i < totalWords; i++)
         {
             string g = _remainingWords[i];
-            
-            var partitions = new Dictionary<string, int>();
-            for (int j = 0; j < _remainingWords.Count; j++)
+
+            // Build the partition‐counts for guess g
+            var partitions = new Dictionary<string, int>(capacity: totalWords);
+            for (int j = 0; j < totalWords; j++)
             {
                 string w = _remainingWords[j];
-                var pattern = FeedBack(g, w);
+                string pattern = FeedBack(g, w);
+
                 if (partitions.ContainsKey(pattern))
                     partitions[pattern]++;
                 else
                     partitions[pattern] = 1;
             }
-            
-            int largest = partitions.Values.Max();
 
-            if (largest < bestValue)
+            // Compute Shannon entropy over those partition sizes
+            double entropy = 0.0;
+            foreach (var count in partitions.Values)
             {
-                bestValue = largest;
+                double p = (double)count / totalWords;
+                // If p == 0, skip (though count > 0 by construction)
+                entropy += -p * Math.Log(p, 2);
+            }
+
+            // Keep the guess with the highest entropy
+            if (entropy > bestEntropy)
+            {
+                bestEntropy = entropy;
                 bestGuess = g;
             }
         }
+
         return bestGuess;
     }
     

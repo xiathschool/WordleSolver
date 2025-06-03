@@ -83,61 +83,68 @@ public sealed class SlowStudentSolver1 : IWordleSolverStrategy
             var guess = previousResult.Word;
             var statuses = previousResult.LetterStatuses;
 
-            _remainingWords.RemoveAll(candidate =>
+            for (int i = 0; i < 5; i++)
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    var status = statuses[i];
-                    char c = guess[i];
+                var status = statuses[i];
+                char c = guess[i];
 
-                    if (status == LetterStatus.Correct)
+                if (status == LetterStatus.Correct)
+                {
+                    foreach (string word in _remainingWords.ToList())
                     {
-                        if (candidate[i] != c)
-                            return true;
-                    }
-                    else if (status == LetterStatus.Misplaced)
-                    {
-                        if (!candidate.Contains(c) || candidate[i] == c)
-                            return true;
-                    }
-                    else if (status == LetterStatus.Unused)
-                    {
-                        // Only remove words containing the letter if it doesn't appear as Correct or Misplaced elsewhere
-                        bool letterElsewhere = false;
-                        for (int j = 0; j < 5; j++)
+                        if (word[i] != c)
                         {
-                            if (j != i && previousResult.Word[j] == c &&
-                                (previousResult.LetterStatuses[j] == LetterStatus.Correct ||
-                                 previousResult.LetterStatuses[j] == LetterStatus.Misplaced))
+                            _remainingWords.Remove(word);
+                        }
+                    }
+                }
+                else if (status == LetterStatus.Misplaced)
+                {
+                    foreach (string word in _remainingWords.ToList())
+                    {
+                        if (word[i] == c || !word.Contains(c))
+                        {
+                            _remainingWords.Remove(word);
+                        }
+                    }
+                }
+                
+                else if (status == LetterStatus.Unused)
+                {
+                    // Only remove words containing the letter if it doesn't appear as Correct or Misplaced elsewhere
+                    bool letterElsewhere = false;
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (j != i && previousResult.Word[j] == c &&
+                            (previousResult.LetterStatuses[j] == LetterStatus.Correct ||
+                             previousResult.LetterStatuses[j] == LetterStatus.Misplaced))
+                        {
+                            letterElsewhere = true;
+                            break;
+                        }
+                    }
+                    if (!letterElsewhere)
+                    {
+                        foreach (string word in _remainingWords.ToList())
+                        {
+                            if (word.Contains(c))
                             {
-                                letterElsewhere = true;
-                                break;
+                                _remainingWords.Remove(word);
                             }
                         }
-                        if (!letterElsewhere)
+                    }
+                    else
+                    {
+                        foreach (string word in _remainingWords.ToList())
                         {
-                            foreach (string word in _remainingWords.ToList())
+                            if (word[i] == c)
                             {
-                                if (word.Contains(c))
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (string word in _remainingWords.ToList())
-                            {
-                                if (word[i] == c)
-                                {
-                                    return true;
-                                }
+                                _remainingWords.Remove(word);
                             }
                         }
                     }
                 }
-                return false;
-            });
+            }
         }
 
         // Utilize the remaining words to choose the next guess

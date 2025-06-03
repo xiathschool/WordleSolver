@@ -11,7 +11,7 @@ var host = Host.CreateDefaultBuilder()
         services.AddSingleton<WordleService>();
 
         // Student-supplied strategy
-        services.AddSingleton<IWordleSolverStrategy, SlowStudentSolver1>();
+        services.AddSingleton<IWordleSolverStrategy, SlowStudentSolver35>();
 
         // Driver that runs many games
         services.AddSingleton<StudentGuesserService>();
@@ -19,4 +19,4 @@ var host = Host.CreateDefaultBuilder()
     .Build();
 
 var runner = host.Services.GetRequiredService<StudentGuesserService>();
-runner.Run(10);
+runner.Run(100);
