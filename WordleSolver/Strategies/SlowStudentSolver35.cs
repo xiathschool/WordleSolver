@@ -77,6 +77,15 @@ public sealed class SlowStudentSolver35 : IWordleSolverStrategy
                 .Where(w => IsConsistent(w, guess, statuses))
                 .ToList();
         }
+        
+        // 2) If we have shrunk to 2 or fewer possible answers, pick directly from _remainingWords.
+        if (_remainingWords.Count <= 2)
+        {
+            // Choose the first candidate (you could randomize if you prefer).
+            string narrowChoice = _remainingWords[0];
+            _remainingWords.RemoveAt(0);
+            return narrowChoice;
+        }
 
         // Utilize the remaining words to choose the next guess
         string choice = ChooseBestRemainingWord(previousResult);

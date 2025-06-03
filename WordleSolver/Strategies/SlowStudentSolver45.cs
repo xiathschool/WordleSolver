@@ -10,7 +10,7 @@ namespace WordleSolver.Strategies;
 /// Example solver that simply iterates through a fixed list of words.
 /// Students will replace this with a smarter algorithm.
 /// </summary>
-public sealed class SlowStudentSolver4 : IWordleSolverStrategy
+public sealed class SlowStudentSolver45 : IWordleSolverStrategy
 {
     private static readonly string WordListPath = Path.Combine("data", "wordle.txt");
     private static readonly List<string> WordList = LoadWordList();
@@ -31,7 +31,7 @@ public sealed class SlowStudentSolver4 : IWordleSolverStrategy
             .ToList();
     }
 
-    public SlowStudentSolver4()
+    public SlowStudentSolver45()
     {
         // Build a map word→index
         _wordToIndex = new Dictionary<string, int>(capacity: WordList.Count);
@@ -70,14 +70,14 @@ public sealed class SlowStudentSolver4 : IWordleSolverStrategy
             }
             _remainingWords = filtered;
         }
-        /*// 2) If we have shrunk to 2 or fewer possible answers, pick directly from _remainingWords.
+        // 2) If we have shrunk to 2 or fewer possible answers, pick directly from _remainingWords.
         if (_remainingWords.Count <= 2)
         {
             // Choose the first candidate (you could randomize if you prefer).
             string narrowChoice = _remainingWords[0];
             _remainingWords.RemoveAt(0);
             return narrowChoice;
-        }*/
+        }
 
         // 2) Choose best next guess by entropy
         string bestGuess = _remainingWords[0];
