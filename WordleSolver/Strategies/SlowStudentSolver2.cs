@@ -128,9 +128,71 @@ public sealed class SlowStudentSolver2 : IWordleSolverStrategy
     {
         if (_remainingWords.Count == 0)
             throw new InvalidOperationException("No remaining words to choose from");
+
+        string bestGuess = "test";
+        int bestValue = Int32.MaxValue;
         
-        var random = new Random();
-        int index = random.Next(_remainingWords.Count);
-        return _remainingWords[index];
+        for (int i = 0; i < _remainingWords.Count; i++)
+        {
+            string g = _remainingWords[i];
+            
+            var partitions = new Dictionary<string, int>();
+            for (int j = 0; j < _remainingWords.Count; j++)
+            {
+                string w = _remainingWords[i];
+                var pattern = FeedBack(g, w);
+                if (partitions.ContainsKey(pattern))
+                    partitions[pattern]++;
+                else
+                    partitions[pattern] = 1;
+            }
+            
+            int largest = partitions.Values.Max();
+
+            if (largest < bestValue)
+            {
+                bestValue = largest;
+                bestGuess = g;
+            }
+        }
+        return bestGuess;
+    }
+    
+    public string FeedBack(string guess, string answer)
+    {
+        var answerCharCounts = new Dictionary<char, int>();
+        foreach (char c in answer)
+        {
+            if (answerCharCounts.ContainsKey(c))
+                answerCharCounts[c]++;
+            else
+                answerCharCounts[c] = 1;
+        }
+
+        char[] statusChars = new char[5] { '0', '0', '0', '0', '0' };
+
+        for (int i = 0; i < 5; i++)
+        {
+            if (guess[i] == answer[i])
+            {
+                statusChars[i] = '2';
+                answerCharCounts[guess[i]]--;
+            }
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            if (statusChars[i] == '2')
+                continue;
+
+            char g = guess[i];
+            if (answerCharCounts.TryGetValue(g, out int remaining) && remaining > 0)
+            {
+                statusChars[i] = '1';
+                answerCharCounts[g]--;
+            }
+        }
+
+        return new string(statusChars);
     }
 }

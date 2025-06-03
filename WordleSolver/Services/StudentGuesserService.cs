@@ -61,6 +61,7 @@ public sealed class StudentGuesserService
                 if (result.GuessesRemaining == 0)
                     break;
             }
+            Console.WriteLine("Run: " + i);
         }
 
         Console.WriteLine($"Completed {numberOfGames} game(s).");

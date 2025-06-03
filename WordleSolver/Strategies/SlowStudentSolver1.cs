@@ -102,8 +102,38 @@ public sealed class SlowStudentSolver1 : IWordleSolverStrategy
                     }
                     else if (status == LetterStatus.Unused)
                     {
-                        if (candidate[i] == c)
-                            return true;
+                        // Only remove words containing the letter if it doesn't appear as Correct or Misplaced elsewhere
+                        bool letterElsewhere = false;
+                        for (int j = 0; j < 5; j++)
+                        {
+                            if (j != i && previousResult.Word[j] == c &&
+                                (previousResult.LetterStatuses[j] == LetterStatus.Correct ||
+                                 previousResult.LetterStatuses[j] == LetterStatus.Misplaced))
+                            {
+                                letterElsewhere = true;
+                                break;
+                            }
+                        }
+                        if (!letterElsewhere)
+                        {
+                            foreach (string word in _remainingWords.ToList())
+                            {
+                                if (word.Contains(c))
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (string word in _remainingWords.ToList())
+                            {
+                                if (word[i] == c)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
                     }
                 }
                 return false;
