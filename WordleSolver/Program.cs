@@ -11,7 +11,7 @@ var host = Host.CreateDefaultBuilder()
         services.AddSingleton<WordleService>();
 
         // Student-supplied strategy
-        services.AddSingleton<IWordleSolverStrategy, SlowStudentSolver>();
+        services.AddSingleton<IWordleSolverStrategy, SlowStudentSolver1>();
 
         // Driver that runs many games
         services.AddSingleton<StudentGuesserService>();
